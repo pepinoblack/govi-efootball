@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eFootball 2025 Coins Booster</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body style="background-image: url('https://img.goodfon.com/original/1920x1080/c/c9/efootball-2024-mobile-game-efootball-2024-mobilnaia-gra-mess.jpg'); background-size: cover; background-position: center;">
+    <div id="tsparticles"></div>
+
+    <!-- Sections -->
+    <section id="section1">
+        <h1>Welcome</h1>
+        <p>Enter admin name</p>
+        <input id="username" placeholder="Username"><br>
+        <button id="next1">Start</button>
+    </section>
+
+    <section id="section2" style="display: none">
+        <span><img class="titulo_logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/EFootball_logo_-_alternative_colored_version.svg/2560px-EFootball_logo_-_alternative_colored_version.svg.png" alt=""></span>
+        <h1>Generator <span id="usernameTitle"></span></h1>
+        <input id="receiverId" placeholder="Enter user ID"><br>
+        <label>Select your platform</label>
+        <div class="platforms">
+            <label class="platform"><input name="platform" type="radio" value="PC"><span><i class="bi bi-windows"></i></span></label>
+            <label class="platform"><input name="platform" type="radio" value="Xbox"><span><i class="bi bi-xbox"></i></span></label>
+            <label class="platform"><input name="platform" type="radio" value="Android"><span><i class="bi bi-android2"></i></span></label>
+            <label class="platform"><input name="platform" type="radio" value="iOS"><span><i class="bi bi-apple"></i></span></label>
+        </div><br>
+        <button id="next2">Next</button>
+    </section>
+
+    <section id="section3" style="display: none">
+        <h1>Searching for player...</h1>
+        <p id="searchUsername"></p>
+        <div id="spinner" class="spinner"></div>
+        <div id="checkmark" class="checkmark" style="display: none;">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+    </section>
+
+    <section id="section4" style="display: none">
+        <h1>Select the amount of Coins</h1>
+        <div class="options">
+            <label data-amount="1000"><input name="amount" type="radio" value="1000"><img src="https://hilecifare.com/efootball-para-hilesi/images/coins.webp"> 1000 Coins</label>
+            <label data-amount="5000"><input name="amount" type="radio" value="5000"><img src="https://hilecifare.com/efootball-para-hilesi/images/coins.webp"> 5000 Coins</label>
+            <label data-amount="20000"><input name="amount" type="radio" value="20000"><img src="https://hilecifare.com/efootball-para-hilesi/images/coins.webp"> 20000 Coins</label>
+            <label data-amount="100000"><input name="amount" type="radio" value="100000"><img src="https://hilecifare.com/efootball-para-hilesi/images/coins.webp"> Admin Efootball</label>
+        </div><br>
+        <button id="next4">Send</button>
+    </section>
+
+    <section id="section5" style="display: none">
+        <h1 id="loadingText">Sending...</h1>
+        <p id="loadingStatus">Please wait, almost done</p>
+        <div id="loadingBar">
+            <div id="loadingFill" style="width: 0%"></div>
+        </div>
+    </section>
+
+    <section id="section6" style="display: none">
+        <h1>Success</h1>
+        <p id="finalMessage"></p>
+        <div class="success-image">
+            <img id="finalImage" src="https://hilecifare.com/efootball-para-hilesi/images/coins.webp" alt="image">
+        </div>
+        <button id="restart">Send again</button>
+    </section>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const next1 = document.getElementById("next1");
+        const next2 = document.getElementById("next2");
+        const next4 = document.getElementById("next4");
+        const restart = document.getElementById("restart");
+
+        const section1 = document.getElementById("section1");
+        const section2 = document.getElementById("section2");
+        const section3 = document.getElementById("section3");
+        const section4 = document.getElementById("section4");
+        const section5 = document.getElementById("section5");
+        const section6 = document.getElementById("section6");
+
+        const usernameInput = document.getElementById("username");
+        const usernameTitle = document.getElementById("usernameTitle");
+        const receiverId = document.getElementById("receiverId");
+        const searchUsername = document.getElementById("searchUsername");
+
+        const loadingFill = document.getElementById("loadingFill");
+        const spinner = document.getElementById("spinner");
+        const checkmark = document.getElementById("checkmark");
+
+        const finalMessage = document.getElementById("finalMessage");
+        const finalImage = document.getElementById("finalImage");
+
+        let selectedAmount = null;
+
+        next1.addEventListener("click", () => {
+            const adminName = usernameInput.value.trim();
+            if (!adminName) return alert("Enter the admin name.");
+            usernameTitle.textContent = adminName;
+            section1.style.display = "none";
+            section2.style.display = "block";
+        });
+
+        next2.addEventListener("click", () => {
+            const id = receiverId.value.trim();
+            const platform = document.querySelector("input[name='platform']:checked");
+
+            if (!id || !platform) return alert("You must enter the ID and select a platform.");
+
+            searchUsername.textContent = `Player: ${id}`;
+            section2.style.display = "none";
+            section3.style.display = "block";
+
+            spinner.style.display = "block";
+            checkmark.style.display = "none";
+
+            setTimeout(() => {
+                spinner.style.display = "none";
+                checkmark.style.display = "block";
+
+                setTimeout(() => {
+                    section3.style.display = "none";
+                    section4.style.display = "block";
+                }, 1000);
+            }, 2000);
+        });
+
+        document.querySelectorAll(".platforms label").forEach(label => {
+            label.addEventListener("click", () => {
+                document.querySelectorAll(".platforms label").forEach(l => l.classList.remove("selected"));
+                label.classList.add("selected");
+                label.querySelector("input").checked = true;
+            });
+        });
+
+        document.querySelectorAll(".options label").forEach(label => {
+            label.addEventListener("click", () => {
+                document.querySelectorAll(".options label").forEach(l => l.classList.remove("selected"));
+                label.classList.add("selected");
+                selectedAmount = label.getAttribute("data-amount");
+                label.querySelector("input").checked = true;
+            });
+        });
+
+        next4.addEventListener("click", () => {
+            if (!selectedAmount) return alert("You must select an amount.");
+            section4.style.display = "none";
+            section5.style.display = "block";
+            let progress = 0;
+            loadingFill.style.width = "0%";
+
+            const interval = setInterval(() => {
+                progress += 10;
+                loadingFill.style.width = progress + "%";
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    section5.style.display = "none";
+                    section6.style.display = "block";
+
+                    const user = receiverId.value.trim();
+
+                    if (selectedAmount === "100000") {
+                        // Caso especial Admin
+                        finalMessage.textContent = "You will receive Admin of Efootball";
+                        finalImage.src = "admin.png";
+                    } else {
+                        // Normal
+                        finalMessage.innerHTML = `<span>${selectedAmount}</span> Coins have been sent to <span>${user}</span>`;
+                        finalImage.src = "https://hilecifare.com/efootball-para-hilesi/images/coins.webp";
+                    }
+                }
+            }, 300);
+        });
+
+        restart.addEventListener("click", () => {
+            window.location.reload();
+        });
+    });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+    <script>
+        tsParticles.load("tsparticles", {
+            fullScreen: { enable: true, zIndex: -1 },
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: ["#00bfff", "#ffffff"] },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                move: { enable: true, speed: 1, direction: "none", outMode: "bounce" },
+                links: { enable: true, distance: 100, color: "#68c0e6", opacity: 0.4, width: 1 }
+            }
+        });
+    </script>
+</body>
+</html>
